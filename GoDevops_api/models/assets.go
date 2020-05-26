@@ -7,7 +7,7 @@ import (
 )
 
 type Asset struct {
-	Model `json:"model,omitempty"`
+	gorm.Model
 
 	Hostname   string `json:"hostname,omitempty"`
 	AssetType  string `json:"asset_type,omitempty"`
