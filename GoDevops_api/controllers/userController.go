@@ -65,10 +65,17 @@ func Register(c *gin.Context) {
 // Login xxx
 func Login(c *gin.Context) {
 	// get param
-	name := c.PostForm("name")
-	telephone := c.PostForm("telephone")
-	password := c.PostForm("password")
-	log.Println("params come from web:", name, telephone, password)
+	// name := c.PostForm("name")
+	// telephone := c.PostForm("telephone")
+	// password := c.PostForm("password")
+	var requestUser = models.User{}
+	e := c.BindJSON(&requestUser)
+	if e != nil {
+		utils.Fail(c, nil, "parse data from web err")
+	}
+	telephone := requestUser.Telephone
+	password := requestUser.Password
+	log.Println("params come from web:", telephone, password)
 
 	// check telephone
 	if len(telephone) != 11 {

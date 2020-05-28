@@ -10,6 +10,7 @@ import (
 // InitRouter xxx
 func InitRouter() *gin.Engine {
 	r := gin.New()
+	r.Use(middlewares.CORSMiddleware())
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 

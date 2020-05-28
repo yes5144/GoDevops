@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"log"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,7 @@ func JwtMiddleware() gin.HandlerFunc {
 
 		// get tokenString from athorization header
 		tokenString := c.GetHeader("Authorization")
+		log.Println(tokenString)
 		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer ") {
 			utils.Fail(c, nil, "Authory not enough ")
 			c.Abort()
