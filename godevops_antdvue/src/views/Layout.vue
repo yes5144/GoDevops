@@ -20,12 +20,18 @@
             <router-link to="/dashboard/dash02">dash02</router-link>
           </a-menu-item>
         </a-sub-menu>
-        <a-menu-item key="9">
-          <!-- <a-icon type="flag" /> -->
-          <a-icon type="gitlab" />
-          <span>AppDeploy</span>
-          <router-link to="/appdeploy">deploydetail</router-link>
-        </a-menu-item>
+        <a-sub-menu key="sub2">
+          <span slot="title">
+            <a-icon type="gitlab" />
+            <span>AppDeploy</span>
+          </span>
+          <a-menu-item key="8">
+            <router-link to="/appdeploy/apppack">应用打包</router-link>
+          </a-menu-item>
+          <a-menu-item key="9">
+            <router-link to="/appdeploy/deploydetail">应用部署</router-link>
+          </a-menu-item>
+        </a-sub-menu>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -44,11 +50,11 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      collapsed: false,
-    }
-  },
+      collapsed: false
+    };
+  }
 };
 </script>
 
