@@ -10,7 +10,8 @@ import { getUserInfo } from "../api";
 export default {
   data() {
     return {
-      username: this.$store.state.user.Name || "unknown"
+      // username: this.$store.state.user || "unknown"
+      username: localStorage.user || "unknown"
     };
   },
   name: "HelloWorld",
@@ -22,6 +23,10 @@ export default {
       getUserInfo().then(res => {
         console.log(res);
         let { code, msg, data } = res;
+        console.log("code22:", code);
+        console.log("msg22:", msg);
+        console.log("data22:", data);
+
         if (!data.user) {
           this.$message({
             message: msg,
@@ -31,7 +36,8 @@ export default {
         } else {
           localStorage.user = data.user.Name;
           this.$store.commit("LOGIN", {
-            user: data.user.Name
+            user: data.user.Name,
+            token: localStorage.token
           });
         }
       });

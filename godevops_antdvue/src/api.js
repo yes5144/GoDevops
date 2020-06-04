@@ -3,7 +3,8 @@ import store from './vuex/store'
 import router from './routes'
 
 // localStorage.baseUrl = idcUrlConfig.baseIdc
-localStorage.baseUrl = 'http://127.0.0.1:8080'
+// localStorage.baseUrl = 'http://127.0.0.1:8080'
+localStorage.baseUrl = process.env.VUE_APP_BASE_URL
 
 axios.defaults.timeout = 3600000
 axios.defaults.baseURL = localStorage.baseUrl
