@@ -13,9 +13,19 @@ import (
 // Register xxx
 func Register(c *gin.Context) {
 	// get post param
-	name := c.PostForm("name")
-	telephone := c.PostForm("telephone")
-	password := c.PostForm("password")
+	// name := c.PostForm("name")
+	// telephone := c.PostForm("telephone")
+	// password := c.PostForm("password")
+	// log.Println("params come from web:", name, telephone, password)
+	// get post json param
+	var requestUser = models.User{}
+	e := c.BindJSON(&requestUser)
+	if e != nil {
+		utils.Fail(c, nil, "parse data from web err")
+	}
+	name := requestUser.Name
+	telephone := requestUser.Telephone
+	password := requestUser.Password
 	log.Println("params come from web:", name, telephone, password)
 
 	// check password
