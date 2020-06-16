@@ -66,6 +66,16 @@ export const getUserInfo = () => {
     return axios.get(`/api/auth/info`).then(res => res.data)
 }
 
+// get allVersions 
+export const getAllPackVersions = () => {
+    return axios.get(`/api/v1/versions/all`).then(res => res.data)
+}
+
+// post packIds 
+export const postPackIds = params => {
+    return axios.post(`/api/v1/versions/apppack`, params).then(res => res.data)
+}
+
 //navigation
 export const getNavigation = () => {
     return axios.get(`/api/v1/navigation`).then(res => res.data);

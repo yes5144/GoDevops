@@ -1,5 +1,5 @@
 <template>
-  <a-card title="Register" style="width: 360px">
+  <a-card title="Register" style="width: 360px;height:400px">
     <a-form :form="form" @submit="registerSubmit">
       <a-form-item v-bind="formItemLayout">
         <span slot="label">Nickname&nbsp;</span>
@@ -60,7 +60,7 @@
         </a-checkbox>
       </a-form-item>
       <a-form-item v-bind="tailFormItemLayout">
-        <a-button type="primary" html-type="submit">Register</a-button>
+        <a-button type="primary" block>Register</a-button>
       </a-form-item>
     </a-form>
   </a-card>
