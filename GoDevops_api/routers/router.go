@@ -38,7 +38,8 @@ func InitRouter() *gin.Engine {
 		// versions
 		versions := apiv1.Group("/versions")
 		{
-			versions.GET("/", v1.GetAllVersions)
+			versions.POST("/apppack", v1.PostPackIds)
+			versions.GET("/all", v1.GetAllVersions)
 		}
 	}
 
