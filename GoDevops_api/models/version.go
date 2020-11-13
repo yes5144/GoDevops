@@ -2,6 +2,7 @@ package models
 
 import (
 	"log"
+	"strings"
 )
 
 // Version xxx
@@ -24,9 +25,10 @@ func (v *Version) GetAll() ([]Version, error) {
 	return version, nil
 }
 
-func (v *Version) GetByIds(string) ([]Version, error) {
+func (v *Version) GetByIds(ids string) ([]Version, error) {
 	var version []Version
-	DB.Select([]string{"id", "project", "zone", "version", "update_time"}).Where("id in (?)", []uint{3, 2, 5}).Find(&version)
+	log.Printf("------%#v", ids)
+	DB.Select([]string{"id", "project", "zone", "version", "update_time"}).Where("id in (?)", strings.Split(ids, ",")).Find(&version)
 	log.Printf("from model getbyids: %#v ", version)
 	return version, nil
 }

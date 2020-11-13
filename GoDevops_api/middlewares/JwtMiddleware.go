@@ -17,7 +17,7 @@ func JwtMiddleware() gin.HandlerFunc {
 		tokenString := c.GetHeader("Authorization")
 		log.Println(tokenString)
 		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer ") {
-			utils.Fail(c, nil, "Authory not enough ")
+			utils.JwtFail(c, nil, "Authory not enough ")
 			c.Abort()
 			return
 		}
@@ -26,7 +26,7 @@ func JwtMiddleware() gin.HandlerFunc {
 		// parseToen
 		token, claims, err := utils.ParseToken(tokenString)
 		if err != nil || !token.Valid {
-			utils.Fail(c, nil, "authory nt enough")
+			utils.JwtFail(c, nil, "authory nt enough")
 			c.Abort()
 			return
 		}
@@ -38,7 +38,7 @@ func JwtMiddleware() gin.HandlerFunc {
 
 		// user exist
 		if userId == 0 {
-			utils.Fail(c, nil, "no authorization")
+			utils.JwtFail(c, nil, "no authorization")
 			c.Abort()
 			return
 		}

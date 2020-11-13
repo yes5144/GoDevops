@@ -27,7 +27,8 @@ func InitRouter() *gin.Engine {
 	r.POST("/api/auth/login", controllers.Login)
 	r.GET("/api/auth/info", middlewares.JwtMiddleware(), controllers.Info)
 
-	apiv1 := r.Group("/api/v1", middlewares.JwtMiddleware())
+	// apiv1 := r.Group("/api/v1", middlewares.JwtMiddleware())
+	apiv1 := r.Group("/api/v1")
 	{
 		// assets
 		assets := apiv1.Group("/assets")

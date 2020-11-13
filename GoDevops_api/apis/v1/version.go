@@ -1,8 +1,11 @@
 package v1
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yes5144/GoDevops/GoDevops_api/models"
@@ -53,11 +56,33 @@ func PostPackIds(c *gin.Context) {
 	log.Println("get ids from api:---------------")
 	// log.Println(version.GetAll())
 	log.Println("get ids from api:---------------")
-	vs, err := version.GetByIds("dd")
+	vs, err := version.GetByIds(ids)
 	if err != nil {
 		utils.Fail(c, nil, "err")
 	}
 	log.Println(vs)
+	for _, v := range vs {
+		log.Printf("vvv %T, vvv %v", v, v)
+		tmpVer := v.Version
+		tmpProj := v.Project
+		tmpZone := v.Zone
+		newVersionList := strings.Split(tmpVer, ".")
+		lastVer, _ := strconv.Atoi(newVersionList[len(newVersionList)-1])
+		nLVer := fmt.Sprintf("%d", lastVer+1)
+		newVersionList[len(newVersionList)-1] = nLVer
+		tmpNewVer := strings.Join(newVersionList[:], ".")
+		dest := fmt.Sprintf("d:/20200624/%s/%s/%s_%s_v%s_date", tmpProj, tmpZone, tmpProj, tmpZone, tmpNewVer)
+		// copy
+		utils.CopyDir(sPath+"/svn_proc", dest)
+		utils.CopyDir(sPath+"/wktest.sh", dest)
+		zipFile := dest + ".zip"
+		log.Println(tmpVer, tmpProj, tmpZone, tmpNewVer, dest, zipFile)
+		// zip
+		// utils.ZipDir(dest, zipFile)
+		// update version
+
+	}
+	// version client server pack
 
 	utils.Success(c, gin.H{"data": vs}, "data success")
 }

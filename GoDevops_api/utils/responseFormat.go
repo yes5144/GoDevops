@@ -14,7 +14,6 @@ func responseFormat(c *gin.Context, httpStatus int, code int, data gin.H, msg st
 		"msg":  msg,
 	},
 	)
-
 }
 
 // Success hhh
@@ -25,4 +24,9 @@ func Success(c *gin.Context, data gin.H, msg string) {
 // Fail hhh
 func Fail(c *gin.Context, data gin.H, msg string) {
 	responseFormat(c, http.StatusOK, 400, data, msg)
+}
+
+// JwtFail hhh
+func JwtFail(c *gin.Context, data gin.H, msg string) {
+	responseFormat(c, http.StatusUnauthorized, 400, data, msg)
 }
