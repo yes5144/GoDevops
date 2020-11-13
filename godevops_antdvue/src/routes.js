@@ -46,6 +46,17 @@ const routes = [
         ]
     },
     {
+        path: "/system",
+        component: Layout,
+        name: "system",
+        icon: 'setting',
+        children: [
+            { path: "Account", name: "账户管理", component: () => import('./views/System/Account') },
+            { path: "Role", name: "角色管理", component: () => import('./views/System/Role') },
+            { path: "Setting", name: "系统设置", component: () => import('./views/System/Setting') }
+        ]
+    },
+    {
         path: "/login",
         component: Login,
         name: '',

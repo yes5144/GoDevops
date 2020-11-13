@@ -5,90 +5,54 @@
       <a-breadcrumb-item>apppack</a-breadcrumb-item>
     </a-breadcrumb>
 
-    <a-card>
-      <a-col :span="8" :order="1">
-        <!-- <a-input placeholder="input client abs path" allow-clear @change="onChange" /> -->
-        <a-input
-          v-decorator="[
+    <a-card class="card">
+      <a-form layout="inline" :form="form" @submit="handleSubmit">
+        <a-form-item>
+          <!-- <a-input placeholder="input client abs path" allow-clear @change="onChange" /> -->
+          <a-input
+            v-decorator="[
           'client_path',
         ]"
-          placeholder="client Path"
-          allow-clear
-          v-model="client_path"
-        />
-      </a-col>
-      <a-col :span="8" :order="2">
-        <!-- <a-input placeholder="input server abs path" allow-clear @change="onChange" /> -->
-        <a-input
-          v-decorator="[
+            placeholder="client Path"
+            allow-clear
+            v-model="client_path"
+          />
+        </a-form-item>
+
+        <a-form-item>
+          <!-- <a-input placeholder="input server abs path" allow-clear @change="onChange" /> -->
+          <a-input
+            v-decorator="[
           'server_path',
         ]"
-          placeholder="server Path"
-          allow-clear
-          v-model="server_path"
-        />
-      </a-col>
-      <a-button color="blue" type="primary; margin-right: 5px;">Add</a-button>
-      <a-button type="primary" @click="postIds()">批量打包</a-button>
-    </a-card>
-
-    <a-card>
-      <div>
-        <a-table :row-selection="rowSelection" :columns="columns" :data-source="data" row-key="id">
-          <a slot="id" slot-scope="text">{{ text }}</a>
-        </a-table>
-      </div>
-    </a-card>
-    <a-card>
-      <a-row type="flex" :gutter="6">
-        <a-col :span="6" :order="1">
-          <a-select
-            mode="multiple"
-            :default-value="['a1', 'b2']"
-            style="width: 100%"
-            placeholder="Please select"
+            placeholder="server Path"
             allow-clear
-            @change="handleChange"
-          >
-            <a-select-option
-              v-for="i in 25"
-              :key="(i + 9).toString(36) + i"
-            >{{ (i + 9).toString(36) + i }}</a-select-option>
-          </a-select>
-        </a-col>
-        <a-col :span="6" :order="3">
-          <a-select
-            show-search
-            placeholder="Select a person"
-            option-filter-prop="children"
-            style="width: 200px"
-            :filter-option="filterOption"
-            @focus="handleFocus"
-            @blur="handleBlur"
-            @change="handleChange2"
-          >
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
-            <a-select-option value="tom">Tom</a-select-option>
-          </a-select>
-        </a-col>
-        <a-col :span="6" :order="2">
-          <!-- <a-input placeholder="input with clear icon" allow-clear @change="onChange" /> -->
-          <a-input placeholder="input placeholder" />
-        </a-col>
-        <a-col :span="6" :order="4">
-          <a-range-picker @change="onChange">
-            <a-icon slot="suffixIcon" type="smile" />
-          </a-range-picker>
-        </a-col>
-      </a-row>
+            v-model="server_path"
+          />
+        </a-form-item>
 
-      <!-- <a-row>
-            <a-col :span="8">col-8</a-col>
-            <a-col :span="8" :offset="8">col-8</a-col>
-      </a-row>-->
+        <a-form-item>
+          <a-button type="primary" @click="postVersionIds()">批量打包</a-button>
+        </a-form-item>
+      </a-form>
+
+      <!-- showModal 模态框 -->
+      <div>
+        <a-button icon="plus" type="primary" @click="showModal">新建</a-button>
+      </div>
+      <!-- version data table -->
+      <a-table :row-selection="rowSelection" :columns="columns" :data-source="data" row-key="id">
+        <!-- <a slot="id" slot-scope="text">{{ text }}</a> -->
+        <template slot="id" slot-scope="text, record">
+          <a-button-group :size="size" v-if="data.length">
+            <a-button type="primary" @click="() => packVersionOne(record.id)">打包</a-button>
+            <a-button type="danger">nothing</a-button>
+          </a-button-group>
+        </template>
+      </a-table>
     </a-card>
 
+    <!-- 自选录入input -->
     <a-card title="打包记录">
       <a-table :columns="columns2" :data-source="data2">
         <a slot="name" slot-scope="text">{{ text }}</a>
@@ -114,6 +78,19 @@
         </span>
       </a-table>
     </a-card>
+
+    <!-- 模态对话框 -->
+    <div>
+      <a-modal
+        title="Title"
+        :visible="visible"
+        :confirm-loading="confirmLoading"
+        @ok="handleOk"
+        @cancel="handleCancel"
+      >
+        <p>{{ ModalText }}</p>
+      </a-modal>
+    </div>
   </div>
 </template>
 
@@ -214,6 +191,9 @@ const data2 = [
 export default {
   data() {
     return {
+      ModalText: "Content of the modal",
+      visible: false,
+      confirmLoading: false,
       client_path: "",
       server_path: "",
       data: [],
@@ -318,7 +298,7 @@ export default {
           .indexOf(input.toLowerCase()) >= 0
       );
     },
-    postIds() {
+    postVersionIds() {
       const apppackIds = this.selectedRowKeys;
       if (apppackIds.length > 0) {
         console.log(apppackIds);
@@ -336,7 +316,52 @@ export default {
       } else {
         alert("select a one, then try again");
       }
+    },
+
+    // appPack
+    packVersionOne(key) {
+      console.log("onDelete--------key", key);
+      const dataSource = [...this.data];
+      this.dataSource = dataSource.filter(item => item.key !== key);
+
+      const packParm = {
+        packIds: key.toString(),
+        serverpath: this.server_path,
+        clientpath: this.client_path
+      };
+      console.log("packparam---------", packParm);
+      postPackIds(packParm).then(res => {
+        // http code
+        let { code, msg, data } = res;
+        console.log(code, msg, data);
+      });
+    },
+
+    // modal
+    showModal() {
+      this.visible = true;
+    },
+    handleOk(e) {
+      this.ModalText = "The modal will be closed after two seconds";
+      this.confirmLoading = true;
+      console.log("handleOk", e);
+
+      setTimeout(() => {
+        this.visible = false;
+        this.confirmLoading = false;
+      }, 2000);
+    },
+    handleCancel(e) {
+      console.log("Clicked cancel button", e);
+      this.visible = false;
     }
+    // over
   }
 };
 </script>
+
+<style scoped>
+.card {
+  margin-bottom: 24px;
+}
+</style>

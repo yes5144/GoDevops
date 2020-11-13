@@ -76,6 +76,11 @@ export const postPackIds = params => {
     return axios.post(`/api/v1/versions/apppack`, params).then(res => res.data)
 }
 
+// post packOne 
+export const postPackOne = params => {
+    return axios.post(`/api/v1/versions/apppack`, params).then(res => res.data)
+}
+
 //navigation
 export const getNavigation = () => {
     return axios.get(`/api/v1/navigation`).then(res => res.data);

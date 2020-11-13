@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card>
+    <a-card class="card">
       <a-row type="flex" :gutter="6">
         <a-col :span="6" :order="1">
           <a-select
@@ -50,7 +50,7 @@
       </a-row>-->
     </a-card>
 
-    <a-card>
+    <a-card class="card">
       <div>
         <a-table :row-selection="rowSelection" :columns="columns" :data-source="data" />
       </div>
@@ -61,115 +61,122 @@
 <script>
 const columns = [
   {
-    title: '姓名',
-    dataIndex: 'name',
+    title: "姓名",
+    dataIndex: "name"
   },
   {
-    title: '年龄',
-    dataIndex: 'age',
+    title: "年龄",
+    dataIndex: "age"
   },
   {
-    title: '地址',
-    dataIndex: 'address',
-  },
-]
+    title: "地址",
+    dataIndex: "address"
+  }
+];
 
-const data = []
+const data = [];
 for (let i = 0; i < 46; i++) {
   data.push({
     key: i,
     name: `Edward King ${i}`,
     age: 32,
-    address: `London, Park Lane no. ${i}`,
-  })
+    address: `London, Park Lane no. ${i}`
+  });
 }
 
 export default {
-  data () {
+  data() {
     return {
       data,
       columns,
-      selectedRowKeys: [], // Check here to configure the default column
-    }
+      selectedRowKeys: [] // Check here to configure the default column
+    };
   },
   computed: {
-    rowSelection () {
-      const { selectedRowKeys } = this
+    rowSelection() {
+      const { selectedRowKeys } = this;
       return {
         selectedRowKeys,
         onChange: this.onSelectChange,
         hideDefaultSelections: true,
         selections: [
           {
-            key: 'all-data',
-            text: 'Select All Data',
+            key: "all-data",
+            text: "Select All Data",
             onSelect: () => {
-              this.selectedRowKeys = [...Array(46).keys()] // 0...45
-            },
+              this.selectedRowKeys = [...Array(46).keys()]; // 0...45
+            }
           },
           {
-            key: 'odd',
-            text: 'Select Odd Row',
+            key: "odd",
+            text: "Select Odd Row",
             onSelect: changableRowKeys => {
-              let newSelectedRowKeys = []
+              let newSelectedRowKeys = [];
               newSelectedRowKeys = changableRowKeys.filter((key, index) => {
                 if (index % 2 !== 0) {
-                  return false
+                  return false;
                 }
-                return true
-              })
-              this.selectedRowKeys = newSelectedRowKeys
-            },
+                return true;
+              });
+              this.selectedRowKeys = newSelectedRowKeys;
+            }
           },
           {
-            key: 'even',
-            text: 'Select Even Row',
+            key: "even",
+            text: "Select Even Row",
             onSelect: changableRowKeys => {
-              let newSelectedRowKeys = []
+              let newSelectedRowKeys = [];
               newSelectedRowKeys = changableRowKeys.filter((key, index) => {
                 if (index % 2 !== 0) {
-                  return true
+                  return true;
                 }
-                return false
-              })
-              this.selectedRowKeys = newSelectedRowKeys
-            },
-          },
+                return false;
+              });
+              this.selectedRowKeys = newSelectedRowKeys;
+            }
+          }
         ],
-        onSelection: this.onSelection,
-      }
-    },
+        onSelection: this.onSelection
+      };
+    }
   },
   methods: {
-    onSelectChange (selectedRowKeys) {
-      console.log('selectedRowKeys changed: ', selectedRowKeys)
-      this.selectedRowKeys = selectedRowKeys
+    onSelectChange(selectedRowKeys) {
+      console.log("selectedRowKeys changed: ", selectedRowKeys);
+      this.selectedRowKeys = selectedRowKeys;
     },
 
     // df
-    onChange (date, dateString) {
-      console.log(date, dateString)
+    onChange(date, dateString) {
+      console.log(date, dateString);
     },
 
-    handleChange (value) {
-      console.log(`selected ${value}`)
+    handleChange(value) {
+      console.log(`selected ${value}`);
     },
     // dd
-    handleChange2 (value) {
-      console.log(`selected ${value}`)
+    handleChange2(value) {
+      console.log(`selected ${value}`);
     },
-    handleBlur () {
-      console.log('blur')
+    handleBlur() {
+      console.log("blur");
     },
-    handleFocus () {
-      console.log('focus')
+    handleFocus() {
+      console.log("focus");
     },
-    filterOption (input, option) {
+    filterOption(input, option) {
       return (
-        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      )
-    },
-
-  },
+        option.componentOptions.children[0].text
+          .toLowerCase()
+          .indexOf(input.toLowerCase()) >= 0
+      );
+    }
+  }
 };
 </script>
+
+<style  scoped>
+.card {
+  margin-bottom: 24px;
+}
+</style>
